@@ -1,6 +1,7 @@
 'use server';
 
 import { sql } from '@vercel/postgres';
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 const FormSchema = z.object({
@@ -26,4 +27,7 @@ export async function createInvoice(formData: FormData) {
     INSERT INTO invoices (customer_id, amount, status, date)
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
   `;
+
+  // clear cache and request for a fresh data
+  revalidatePath('/dashboard/invoices');
 }
