@@ -2,6 +2,7 @@
 
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
 const FormSchema = z.object({
@@ -30,4 +31,7 @@ export async function createInvoice(formData: FormData) {
 
   // clear cache and request for a fresh data
   revalidatePath('/dashboard/invoices');
+
+  // redirect
+  redirect('/dashboard/invoices');
 }
